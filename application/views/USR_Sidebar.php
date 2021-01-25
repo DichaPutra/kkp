@@ -3,7 +3,7 @@
     <li class="header">Admin KPI</li>
     <!-- Optionally, you can add icons to the links -->
     <li><a href="<?php echo base_url(); ?>index.php/USR_Scoring_c"><i class="fa fa-area-chart"></i> <span>Scoring</span></a></li>
-    <li><a href="#"><i class="fa fa-tasks"></i> <span>Nilai KKP</span></a></li>
+    <!--<li><a href="#"><i class="fa fa-tasks"></i> <span>Nilai KKP</span></a></li>-->
 
     <!--    <li class="treeview">
             <a href="#"><i class="fa fa-area-chart"></i> <span>Score Monitoring</span>

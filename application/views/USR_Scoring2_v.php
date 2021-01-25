@@ -170,11 +170,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         echo bulan(date('n') - 1) . ", th." . date('Y');
                                     }
                                     ?></h4><br><br>
-                                    <br><br>
                                     <div class="alert alert-info"> <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
                                         <strong>Perhatian :</strong><br>
-                                        - Masukkan nilai "n/a" apabila kuisioner tidak relefan dengan departemen anda<br>
-                                        - Untuk nilai dibawah 60 wajib memberikan alasan.
+                                        <ul>
+                                            <li>Masukkan nilai "n/a" apabila kuisioner tidak relefan dengan departemen anda</li>
+                                            <li>Untuk nilai dibawah 60 wajib memberikan alasan.</li>
+                                            <li>(Opsional) Inputkan masukkan kepada departemen terkait pada kolom "Kritik dan Saran". Kritik dan Saran akan diberikan kepada departemen bersangkutan sebagai masukan agar dapat membenahi kinerja untuk kedepanya.</li>
+                                        </ul>
                                     </div>
 
                                     <form method="post" action="<?php echo base_url(); ?>index.php/USR_Scoring_c/inputNilaiProses">
@@ -188,7 +190,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     <th class="text-center">No</th>
                                                     <th class="text-center">Kuisioner</th>
                                                     <th class="text-center">Nilai</th>
-                                                    <th class="text-center">Alasan, Kritik & Saran</th>
+                                                    <th class="text-center">Alasan </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -203,7 +205,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                         <td class="text-center"> 
                                                             <div><input type="hidden" name="idKuisioner[]" value="<?php echo $key->idkuisioner; ?>"></div>
                                                             <div><input class="form-control" type="text" size="3" maxlength="3" name="nilai[]" required></div>
-
                                                         </td>
                                                         <td>
                                                             <div><textarea maxlength="500" style="width: 100%"class="form-control" rows="4" type="text" name="catatan[]"></textarea></div>
@@ -211,13 +212,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>
-                                        </table>
+                                        </table><br>
+                                        <div class="form-group">
+                                            <label>Kritik dan Saran : <small>(Optional)</small></label>
+                                            <textarea placeholder="Masukkan kritik dan saran anda disini ..." name="kritiksaran" id="message" class="form-control" rows="6" maxlength="5000"></textarea>
+                                            <div class=""></div>
+                                        </div>
 
-                                        <button type="submit" class="btn btn-sm btn-primary pull-right" style="margin-left: 10px;">Submit</button>
+                                        <button onclick="return confirm('penilaian yang talah anda berikan tidak dapat diubah lagi, apakah yakin untuk mengumpulkan nilai tersebut?');" type="submit" class="btn btn-sm btn-primary pull-right" style="margin-left: 10px;">Submit</button>
                                         <a href="<?php echo base_url(); ?>index.php/USR_Scoring_c">
                                             <button type="button" class="btn btn-sm btn-default pull-right">Cancel</button>
                                         </a>
                                     </form>
+                                    <img src="<?php echo base_url(); ?>dist/img/KeteranganNilai.PNG" alt="User Image" style="margin-top: 10px;">
                                 </div>
                                 <!-- /.box-body -->
                             </div>
@@ -268,7 +275,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script>
             $(function () {
                 $("#example").DataTable({
-                    "paging": false,"searching": false
+                    "paging": false,"searching": false,"bInfo" : false
                 }
             );
             });

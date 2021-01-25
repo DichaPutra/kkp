@@ -11,7 +11,7 @@ class Account_m extends CI_Model {
 
     function cekAccount($username) {
         // fungsi cekAkun return TRUE bila akun telah terdaftar
-        $query = $this->db->query("SELECT * FROM `Account` WHERE username = '$username'");
+        $query = $this->db->query("SELECT * FROM account WHERE username = '$username'");
         if ($query->result_array() != NULL) {
             //bila sudah terdaftar return TRUE
             return TRUE;
@@ -22,7 +22,7 @@ class Account_m extends CI_Model {
 
     function cekBagian($bagian) {
         // fungsi cekAkun return TRUE bila akun telah terdaftar
-        $query = $this->db->query("SELECT * FROM `Account` WHERE bagian = '$bagian'");
+        $query = $this->db->query("SELECT * FROM `account` WHERE bagian = '$bagian'");
         if ($query->result_array() != NULL) {
             //bila sudah terdaftar return TRUE
             return TRUE;
@@ -33,18 +33,18 @@ class Account_m extends CI_Model {
 
     function selectAccount($username) {
         //fungsi untuk pengambilan data Akun
-        $query = $this->db->query("SELECT * FROM `Account` WHERE username = '$username'");
+        $query = $this->db->query("SELECT * FROM `account` WHERE username = '$username'");
         return $query->result_array();
     }
 
     function selectDivisi($id) {
-        $query = $this->db->query("SELECT * FROM `Divisi` WHERE Account_id = '$id'");
+        $query = $this->db->query("SELECT * FROM `divisi` WHERE account_id = '$id'");
         return $query->result_array();
     }
 
     function getPass($username) {
         // fungsi cekAkun return TRUE bila akun telah terdaftar
-        $query = $this->db->query("SELECT * FROM `Account` WHERE username = '$username'");
+        $query = $this->db->query("SELECT * FROM `account` WHERE username = '$username'");
         $data = $query->result_array();
         return $data[0][2];
     }
@@ -56,26 +56,26 @@ class Account_m extends CI_Model {
     //============= function admin KPI ===================
     function getAllAccountRelasi() {
         $query = $this->db->query("SELECT bagian, username, namapic, (SELECT COUNT(bagianpenilai) FROM relasipenilaian WHERE bagianpenilai = a.bagian) AS jumlahRelasi
-            FROM `Account` a WHERE isadmin = '0'");
+            FROM `account` a WHERE isadmin = '0'");
         $data = $query->result();
         return $data;
     }
 
     function getAllAccountKuisioner() {
         $query = $this->db->query("SELECT bagian, username, namapic, (SELECT COUNT(idkuisioner) FROM kuisioner WHERE bagian = a.bagian) AS jumlahRelasi
-            FROM `Account` a WHERE isadmin = '0'");
+            FROM `account` a WHERE isadmin = '0'");
         $data = $query->result();
         return $data;
     }
 
     function getAllAccount() {
-        $query = $this->db->query("SELECT * FROM `Account` WHERE isadmin = '0'");
+        $query = $this->db->query("SELECT * FROM `account` WHERE isadmin = '0'");
         $data = $query->result();
         return $data;
     }
 
     function getAllDept() {
-        $query = $this->db->query("SELECT bagian FROM `Account` WHERE isadmin = '0'");
+        $query = $this->db->query("SELECT bagian FROM `account` WHERE isadmin = '0'");
         $data = $query->result();
         return $data;
     }

@@ -23,6 +23,21 @@ class Nilai_m extends CI_Model {
         }
     }
 
+    function kritikSaran($bagianpenilai, $bagiandinilai, $kritiksaran) {
+        $bulan = date('n') - 1;
+        $tahun = date('Y');
+
+        if ($bulan == 0) { //kondisi bila bulan jaunari menilai bulan dec tahun sebelumnya
+            $bulan = 12;
+            $tahun = date('Y') - 1;
+            $this->db->query("INSERT INTO `kritiksaran` (`idkritik`, `bagianpenilai`, `bagiandinilai`, `bulan`, `tahun`, `kritiksaran`) 
+                VALUES (NULL, '$bagianpenilai', '$bagiandinilai', '$bulan', '$tahun', '$kritiksaran');");
+        } else {
+            $this->db->query("INSERT INTO `kritiksaran` (`idkritik`, `bagianpenilai`, `bagiandinilai`, `bulan`, `tahun`, `kritiksaran`) 
+                VALUES (NULL, '$bagianpenilai', '$bagiandinilai', '$bulan', '$tahun', '$kritiksaran');");
+        }
+    }
+
     function pengecekanInputNilai($bulan, $tahun, $bagiandinilai, $bagian) {
         $query = $this->db->query("SELECT * FROM nilai WHERE bagianpenilai='$bagian' AND bulan='$bulan' AND tahun='$tahun' AND bagiandinilai='$bagiandinilai'");
 //        return $query->result_array();
@@ -43,11 +58,64 @@ class Nilai_m extends CI_Model {
         return $query->result();
     }
 
+    function selectKritikSaran($bulan, $tahun, $bagiandinilai, $bagian) {
+        $query = $this->db->query("SELECT `kritiksaran` FROM `kritiksaran` 
+                                        WHERE `bagianpenilai` = '$bagian'
+                                        AND `bagiandinilai` = '$bagiandinilai'
+                                        AND `bulan` = '$bulan'
+                                        AND `tahun` = '$tahun'");
+        return $query->row_array();
+    }
+
     /**
      * 
      * Fungsi model TIMKPI =======================
      * 
      * * */
+    function getKritikSaranBulanan($bulan, $tahun) {
+        $query = $this->db->query("
+                SELECT bagianpenilai, bagiandinilai, kritiksaran 
+                FROM `kritiksaran`
+                WHERE bulan='$bulan' AND tahun='$tahun'
+            ");
+        $data = $query->result();
+        return $data;
+    }
+
+    function getCatatanBulanan($bulan, $tahun) {
+        $query = $this->db->query("
+                SELECT bagianpenilai, bagiandinilai, pertanyaan , catatan 
+                FROM `nilai` , kuisioner
+                WHERE nilai.idkuisioner = kuisioner.idkuisioner 
+                AND bulan='$bulan' AND tahun='$tahun' AND catatan <> '' 
+                ORDER BY `nilai`.`bagiandinilai` ASC
+            ");
+        $data = $query->result();
+        return $data;
+    }
+
+    function getProgressPengumpulan($bulan, $tahun) {
+        $query = $this->db->query("
+                SELECT a.bagian ,  b.bagianpenilai
+
+                FROM account a
+                LEFT JOIN (SELECT bagianpenilai FROM `nilai` WHERE bulan = '$bulan' AND tahun = '$tahun' GROUP BY `bagianpenilai` ORDER BY `catatan`) b 
+
+                ON a.bagian = b.bagianpenilai
+                WHERE a.isadmin = '0'
+            ");
+        $data = $query->result();
+        return $data;
+    }
+
+    function getDetilProgressPengumpulan($departemen, $bulan, $tahun) {
+        $query = $this->db->query("SELECT a.bagiandinilai AS relasi, b.bagiandinilai AS status
+            FROM relasipenilaian a LEFT JOIN (SELECT bagiandinilai FROM nilai WHERE bulan = '$bulan' AND tahun = '$tahun' AND bagianpenilai = '$departemen' GROUP BY bagiandinilai) b ON a.bagiandinilai = b.bagiandinilai 
+            WHERE a.bagianpenilai = '$departemen'");
+        $data = $query->result();
+        return $data;
+    }
+
     function getAvgNilaiKKPBulanan($bulan, $tahun) {
         $query = $this->db->query("
             SELECT bagiandinilai,AVG(nilai) AS avgnilai FROM `nilai` 
@@ -68,6 +136,31 @@ class Nilai_m extends CI_Model {
             GROUP BY bagianpenilai ;
             ");
         return $query->result();
+    }
+
+    function getDetilNilaiPerKuisioner($noBulan, $tahun, $bagiandinilai) {
+        $query = $this->db->query("SELECT a.idkuisioner, b.pertanyaan, AVG(a.nilai) AS nilai
+            FROM `nilai` a , kuisioner b
+            WHERE a.idkuisioner = b.idkuisioner
+            AND bagiandinilai = '$bagiandinilai' 
+            AND bulan = '$noBulan' 
+            AND tahun = '$tahun' 
+            GROUP BY idkuisioner");
+        return $query->result();
+    }
+
+    function getAvgDetilNilaiPerKuisioner($noBulan, $tahun, $bagiandinilai) {
+        $data = $this->getDetilNilaiPerKuisioner($noBulan, $tahun, $bagiandinilai);
+        
+        $no = 0;
+        $sumnilai = 0;
+        
+        foreach ($data as $key) {
+            $no++;
+            $sumnilai+= $key->nilai;
+        }
+        
+        return $sumnilai/$no;
     }
 
     function avgNilaiBulanan($noBulan, $tahun, $bagiandinilai) {

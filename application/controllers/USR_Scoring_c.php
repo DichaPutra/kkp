@@ -40,6 +40,7 @@ class USR_Scoring_c extends CI_Controller {
 
             $this->datakirim['departemen'] = $bagian;
             $this->datakirim['pesan'] = $this->pesan;
+            $this->datakirim['bulanpenilaian'] = date('n');
 
             $this->load->view('USR_Scoring_v', $this->datakirim);
         }
@@ -74,6 +75,7 @@ class USR_Scoring_c extends CI_Controller {
             //load quisioner
             $this->load->model('Kuisioner_m');
             $this->datakirim['kuisioner'] = $this->Nilai_m->selectKuisioner($bulan, $tahun, $bagiandinilai, $bagian);
+            $this->datakirim['kritiksaran'] = $this->Nilai_m->selectKritikSaran($bulan, $tahun, $bagiandinilai, $bagian);
 
             $this->load->view('USR_Scoring3_v', $this->datakirim);
         } else {
@@ -99,9 +101,14 @@ class USR_Scoring_c extends CI_Controller {
         $idKuisioner = $this->input->post('idKuisioner');
         $nilai = $this->input->post('nilai');
         $catatan = $this->input->post('catatan');
+        $kritiksaran = $this->input->post('kritiksaran');
 
         // input ke database // ----------------------------------------------
         $this->load->model('Nilai_m');
+        $this->load->model('Relasipenilaian_m');
+        
+
+        
 
 
         //pengecekan nilai dibawah 60
@@ -111,7 +118,7 @@ class USR_Scoring_c extends CI_Controller {
         foreach ($idKuisioner as $id) {
             if ($nilai[$countercek60] == "n/a" || $nilai[$countercek60] == "N/A") {
                 continue;
-            } else if ($nilai[$countercek60] <= 60 && $catatan[$countercek60] == null) {
+            } else if ($nilai[$countercek60] < 60 && $catatan[$countercek60] == null) {
                 $notValid = $notValid . "$qNo,";
             }
             $qNo++;
@@ -132,6 +139,13 @@ class USR_Scoring_c extends CI_Controller {
                 $this->Nilai_m->inputNilai($nilai[$counter], $bagianpenilai, $bagiandinilai, $id, $catatan[$counter]);
                 $counter++;
             }
+            if ($kritiksaran != NULL) {
+                $this->Nilai_m->kritikSaran($bagianpenilai, $bagiandinilai, $kritiksaran);
+            }
+            
+            //update bulanpenilaian
+            $this->Relasipenilaian_m->updateBulanPenilaian($bagianpenilai, $bagiandinilai);
+
             $this->pesan = "<div class=\"alert alert-success\"> <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\" title=\"close\">×</a><strong>Sukses!</strong> Nilai $bagiandinilai berhasil diinputkan</div>";
             $this->index();
         }

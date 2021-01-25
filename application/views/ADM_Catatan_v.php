@@ -1,46 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-function bulan($strm) {
-    switch ($strm) {
-        case 1 :
-            return 'Januari';
-            break;
-        case 2 :
-            return 'Februari';
-            break;
-        case 3 :
-            return 'Maret';
-            break;
-        case 4 :
-            return 'April';
-            break;
-        case 5 :
-            return 'Mei';
-            break;
-        case 6 :
-            return 'Juni';
-            break;
-        case 7 :
-            return 'Juli';
-            break;
-        case 8 :
-            return 'Agustus';
-            break;
-        case 9 :
-            return 'September';
-            break;
-        case 10 :
-            return 'Oktober';
-            break;
-        case 11 :
-            return 'November';
-            break;
-        case 12 :
-            return 'Desember';
-            break;
-    }
-}
 ?><!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -66,7 +25,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Theme style -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>dist/css/AdminLTE.min.css">
         <!-- AdminLTE Skins. Choose a skin from the css/skins
-             folder instead of downloading all of them to reduce the load. -->
+folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>dist/css/skins/_all-skins.min.css">
     </head>
 
@@ -102,8 +61,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <!-- Menu toggle button -->
 
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-<!--                                    <i class="fa fa-envelope-o"></i>
-                                    <span class="label label-success">4</span>-->
+                                    <!--                                    <i class="fa fa-envelope-o"></i>
+<span class="label label-success">4</span>-->
                                     <?php
                                     echo date('l, d-m-Y');
                                     ;
@@ -132,7 +91,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </div>
                     </div>
 
-                    <?php include 'USR_Sidebar.php'; ?>
+                    <?php include 'ADM_Sidebar.php'; ?>
 
                 </section>
                 <!-- /.sidebar -->
@@ -143,9 +102,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Scoring 
+                        Catatan 
                         <small></small>
                     </h1>
+
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/ADM_NilaiKKP_c">Catatan</a></li>
+                    </ol>
                 </section>
 
                 <!-- Main content -->
@@ -154,63 +117,137 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title"></h3> 
-                                                    <!--<button class="btn btn-default pull-right"> <i class="fa fa-print" aria-hidden="true"></i>  PDF</button>-->
+                                    <!--                                    <h3 class="box-title">Nilai KKP Bulanan</h3> -->
+                                    <!--<button class="btn btn-default pull-right"> <i class="fa fa-print" aria-hidden="true"></i>  PDF</button>-->
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body">
 
+
+                                    <div class="col-md-3">
+                                        <form method="post" action="<?php echo base_url(); ?>index.php/ADM_Catatan_c">
+                                            <select class="form-control" name="bulannumber">
+                                                <option value="1" <?php
+                    if ($noBulan == 1) {
+                        echo 'selected';
+                    }
+                    ?>>1</option>
+                                                <option value="2" <?php
+                                                        if ($noBulan == 2) {
+                                                            echo 'selected';
+                                                        }
+                    ?>> 2</option>
+                                                <option value="3" <?php
+                                                        if ($noBulan == 3) {
+                                                            echo 'selected';
+                                                        }
+                    ?>>3</option>
+                                                <option value="4" <?php
+                                                        if ($noBulan == 4) {
+                                                            echo 'selected';
+                                                        }
+                    ?>>4</option>
+                                                <option value="5" <?php
+                                                        if ($noBulan == 5) {
+                                                            echo 'selected';
+                                                        }
+                    ?>>5</option>
+                                                <option value="6"<?php
+                                                        if ($noBulan == 6) {
+                                                            echo 'selected';
+                                                        }
+                    ?>>6</option>
+                                                <option value="7"<?php
+                                                        if ($noBulan == 7) {
+                                                            echo 'selected';
+                                                        }
+                    ?>>7</option>
+                                                <option value="8"<?php
+                                                        if ($noBulan == 8) {
+                                                            echo 'selected';
+                                                        }
+                    ?>>8</option>
+                                                <option value="9"<?php
+                                                        if ($noBulan == 9) {
+                                                            echo 'selected';
+                                                        }
+                    ?>>9</option>
+                                                <option value="10"<?php
+                                                        if ($noBulan == 10) {
+                                                            echo 'selected';
+                                                        }
+                    ?>>10</option>
+                                                <option value="11"<?php
+                                                        if ($noBulan == 11) {
+                                                            echo 'selected';
+                                                        }
+                    ?>>11</option>
+                                                <option value="12"<?php
+                                                        if ($noBulan == 12) {
+                                                            echo 'selected';
+                                                        }
+                    ?>>12</option>
+                                            </select>
+
+
+                                            <select class="form-control" name="tahun">
+                                                <?php foreach ($tahunlistdb as $thn) { ?>
+                                                    <option 
+                                                        value="<?php echo $thn->tahun; ?>"  
+                                                        <?php
+                                                        if ($tahun == $thn->tahun) {
+                                                            echo 'selected';
+                                                        }
+                                                        ?>
+                                                        >
+                                                            <?php echo $thn->tahun; ?>
+                                                    </option>
+
+                                                <?php } ?>
+                                            </select>
+                                            <button type="submit" class="btn btn-sm btn-primary pull-right">View</button>
+                                        </form>
+                                    </div>
+
+
                                     <?php echo $pesan; ?>
-                                    <?php // var_dump($improvement);  ?>
-                                    <!--<h2 class="text-center">Scoring <?php // echo "$departemen";              ?></h2>-->
-                                    <h2 class="text-center">Scoring KKP</h2>
-                                    <h4 class="text-center"><?php
-                                    if (date('n') == 1) {
-                                        $tahun = date('Y') - 1;
-                                        echo bulan(12) . ", th." . $tahun;
-                                    } else {
-                                        echo bulan(date('n') - 1) . ", th." . date('Y');
-                                    }
-                                    ?></h4><br><br>
+                                    <?php // var_dump($improvement);       ?>
+                                    <h2 class="text-center">Catatan</h2>
+                                    <h4 class="text-center">Periode <?php echo "$bulan $tahun"; ?></h4>
+
+                                    <h2 class="text-center"> </h2><br>
                                     <table id="example" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">No</th>
-                                                <th class="text-center">Departemen Yang Dinilai</th>
-                                                <th class="text-center">Action</th>
-                                                <th class="text-center">Status</th>
+                                                <th>No</th>
+                                                <th class="text-center">Bagian Penilai</th>
+                                                <th class="text-center">Bagian Dinilai</th>
+                                                <th class="text-center">Kuisioner</th>
+                                                <th class="text-center" style="width: 50%">Alasan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
+
+
+
                                             $no = 0;
-                                            foreach ($relasi as $key) {
+                                            foreach ($dept as $key) {
                                                 $no++;
                                                 ?>
                                                 <tr>
                                                     <td class="text-center"><?php echo $no; ?></td>
-                                                    <td class="text-center"><?php echo $key->bagiandinilai; ?></td>
-                                                    <td class="text-center">
-                                                        <a href="<?php echo base_url(); ?>index.php/USR_Scoring_c/inputNilai/<?php echo $key->bagiandinilai; ?>"><button type="button" class="btn btn-sm btn-primary">Input Score</button></a>
-                                                        <!--<button type="button" class="btn btn-sm btn-danger" onclick="return confirm('Seuruh data improvement dan nilai akan terhapus semua, apakah anda yakin menghapus akun tersebut ?');">&#x274c</button>-->
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <?php if ($key->bulanpenilaian == date('n')) {
-                                                            ?>
-                                                            <i class="fa fa-check"></i>
-                                                            <?php
-                                                        } else {
-                                                            ?>
-                                                            <i> - belum dinilai - </i>
-                                                            <?php
-                                                        }
-                                                        ?>
-
-                                                    </td>
+                                                    <td><?php echo $key->bagianpenilai; ?></td>
+                                                    <td><?php echo $key->bagiandinilai; ?></td>
+                                                    <td><?php echo $key->pertanyaan; ?></td>
+                                                    <td><?php echo $key->catatan; ?></td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
                                     </table>
+
+
+
                                 </div>
                                 <!-- /.box-body -->
                             </div>
@@ -260,8 +297,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- page script -->
         <script>
             $(function () {
-                $("#example").DataTable({paging: false});
-                
+                $("#example").DataTable({
+                    "pageLength": 100
+                });
             });
         </script>
         <script>
@@ -278,9 +316,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </script>
 
         <!-- Optionally, you can add Slimscroll and FastClick plugins.
-             Both of these plugins are recommended to enhance the
-             user experience. Slimscroll is required when using the
-             fixed layout. -->
+Both of these plugins are recommended to enhance the
+user experience. Slimscroll is required when using the
+fixed layout. -->
     </body>
 </html>
 

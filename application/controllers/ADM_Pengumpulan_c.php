@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ADM_NilaiKKP_c extends CI_Controller {
+class ADM_Pengumpulan_c extends CI_Controller {
 
     /**
      *  FUNGSI CONTROLLER NilaiKKP
@@ -41,11 +41,11 @@ class ADM_NilaiKKP_c extends CI_Controller {
 
             //ambil bulan sekarang 
             if ($this->input->post('tahun') != NULL) {
-
                 $this->load->model('Nilai_m');
                 $monthNumber = $this->input->post('bulannumber');
                 $month = $this->Nilai_m->bulankonversi($monthNumber);
                 $year = $this->input->post('tahun');
+
                 $this->datakirim['bulan'] = $month;
                 $this->datakirim['noBulan'] = $monthNumber;
                 $this->datakirim['tahun'] = $year;
@@ -61,6 +61,7 @@ class ADM_NilaiKKP_c extends CI_Controller {
                     $month = $this->Nilai_m->bulankonversi($monthNumber);
                     $year = date('Y');
                 }
+
                 $this->datakirim['bulan'] = $month;
                 $this->datakirim['noBulan'] = $monthNumber;
                 $this->datakirim['tahun'] = $year;
@@ -68,47 +69,24 @@ class ADM_NilaiKKP_c extends CI_Controller {
             }
 
             $this->load->model('Nilai_m');
-            $this->datakirim['dept'] = $this->Nilai_m->getAvgNilaiKKPBulanan($monthNumber, $year);
+            $this->datakirim['dept'] = $this->Nilai_m->getProgressPengumpulan($monthNumber, $year);
             //initiate all year yang ada di database
             $this->datakirim['tahunlistdb'] = $this->Nilai_m->tahunlistdb();
 
-            $this->load->view('ADM_NilaiKKP_v', $this->datakirim);
+            $this->load->view('ADM_Pengumpulan_v', $this->datakirim);
         }
     }
 
-    public function listPenilai($bulan, $noBulan, $tahun, $bagiandinilai) {
-        $bagiandinilai = urldecode($bagiandinilai);
+    public function detilPengumpulan($departemen, $bulan, $tahun) {
         $this->datakirim['pesan'] = $this->pesan;
 
-        $this->datakirim['bulan'] = $bulan;
-        $this->datakirim['nobulan'] = $noBulan;
-        $this->datakirim['tahun'] = $tahun;
-        $this->datakirim['bagiandinilai'] = $bagiandinilai;
+        $dept = urldecode($departemen);
+//        echo "$dept | $bulan | $tahun";
 
         $this->load->model('Nilai_m');
-        $this->datakirim['detilpenilai'] = $this->Nilai_m->detilPenilai($noBulan, $tahun, $bagiandinilai);
-        $this->datakirim['detilnilai'] = $this->Nilai_m->detilNilaiPenilai($noBulan, $tahun, $bagiandinilai);
-
-
-        $this->load->view('ADM_NilaiKKP2_v', $this->datakirim);
-//        echo "$noBulan |$bulan| $tahun |$bagiandinilai";
-    }
-
-    public function detilNilaiPerKuisioner($bulan, $noBulan, $tahun, $bagiandinilai) {
-        $bagiandinilai = urldecode($bagiandinilai);
-        $this->datakirim['pesan'] = $this->pesan;
-
-        $this->datakirim['bulan'] = $bulan;
-        $this->datakirim['nobulan'] = $noBulan;
-        $this->datakirim['tahun'] = $tahun;
-        $this->datakirim['bagiandinilai'] = $bagiandinilai;
-
-        $this->load->model('Nilai_m');
-        $this->datakirim['detilNilaiPerKuisiner'] = $this->Nilai_m->getDetilNilaiPerKuisioner($noBulan, $tahun, $bagiandinilai);
-//        $this->datakirim['detilnilai'] = $this->Nilai_m->detilNilaiPenilai($noBulan, $tahun, $bagiandinilai);
-
-
-        $this->load->view('ADM_NilaiKKPq_v', $this->datakirim);
+        $this->datakirim['departemen'] = $dept;
+        $this->datakirim['detailprogress'] = $this->Nilai_m->getDetilProgressPengumpulan($dept, $bulan, $tahun);
+        $this->load->view('ADM_Pengumpulan2_v', $this->datakirim);
     }
 
 }

@@ -1,46 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-function bulan($strm) {
-    switch ($strm) {
-        case 1 :
-            return 'Januari';
-            break;
-        case 2 :
-            return 'Februari';
-            break;
-        case 3 :
-            return 'Maret';
-            break;
-        case 4 :
-            return 'April';
-            break;
-        case 5 :
-            return 'Mei';
-            break;
-        case 6 :
-            return 'Juni';
-            break;
-        case 7 :
-            return 'Juli';
-            break;
-        case 8 :
-            return 'Agustus';
-            break;
-        case 9 :
-            return 'September';
-            break;
-        case 10 :
-            return 'Oktober';
-            break;
-        case 11 :
-            return 'November';
-            break;
-        case 12 :
-            return 'Desember';
-            break;
-    }
-}
 ?><!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -132,7 +91,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </div>
                     </div>
 
-                    <?php include 'USR_Sidebar.php'; ?>
+                    <?php include 'ADM_Sidebar.php'; ?>
 
                 </section>
                 <!-- /.sidebar -->
@@ -143,9 +102,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Scoring 
+                        Detil Penilaian 
                         <small></small>
                     </h1>
+
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/ADM_NilaiKKP_c">Nilai KKP</a></li>
+                        <li class="breadcrumb-item"><a href="#">Detil Penilaian</a></li>
+                    </ol>
                 </section>
 
                 <!-- Main content -->
@@ -154,63 +118,61 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="col-xs-12">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title"></h3> 
-                                                    <!--<button class="btn btn-default pull-right"> <i class="fa fa-print" aria-hidden="true"></i>  PDF</button>-->
+                                    <!--<h3 class="box-title">Detil Penilai</h3>--> 
+                                                                    <!--<button class="btn btn-default pull-right"> <i class="fa fa-print" aria-hidden="true"></i>  PDF</button>-->
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body">
 
+
+
                                     <?php echo $pesan; ?>
-                                    <?php // var_dump($improvement);  ?>
-                                    <!--<h2 class="text-center">Scoring <?php // echo "$departemen";              ?></h2>-->
-                                    <h2 class="text-center">Scoring KKP</h2>
-                                    <h4 class="text-center"><?php
-                                    if (date('n') == 1) {
-                                        $tahun = date('Y') - 1;
-                                        echo bulan(12) . ", th." . $tahun;
-                                    } else {
-                                        echo bulan(date('n') - 1) . ", th." . date('Y');
-                                    }
-                                    ?></h4><br><br>
+                                    <?php // var_dump($improvement);   ?>
+                                    <h2 class="text-center"><?php echo "$bagiandinilai"; ?> </h2>
+                                    <h5 class="text-center">Detil Penilaian Per Kuisioner <?php echo "$bulan $tahun"; ?></h5>
+
+
+                                    <h2 class="text-center"> </h2><br>
                                     <table id="example" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">No</th>
-                                                <th class="text-center">Departemen Yang Dinilai</th>
-                                                <th class="text-center">Action</th>
-                                                <th class="text-center">Status</th>
+                                                <th>No</th>
+                                                <!--<th class="text-center">ID Kuisioner</th>-->
+                                                <th class="text-center">Pertanyaan / Kuisioner</th>
+                                                <th class="text-center">AVG</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
+//                                            var_dump($detilnilai);
+
                                             $no = 0;
-                                            foreach ($relasi as $key) {
+                                            $sumnilai = 0;
+                                            foreach ($detilNilaiPerKuisiner as $key) {
                                                 $no++;
                                                 ?>
                                                 <tr>
                                                     <td class="text-center"><?php echo $no; ?></td>
-                                                    <td class="text-center"><?php echo $key->bagiandinilai; ?></td>
-                                                    <td class="text-center">
-                                                        <a href="<?php echo base_url(); ?>index.php/USR_Scoring_c/inputNilai/<?php echo $key->bagiandinilai; ?>"><button type="button" class="btn btn-sm btn-primary">Input Score</button></a>
-                                                        <!--<button type="button" class="btn btn-sm btn-danger" onclick="return confirm('Seuruh data improvement dan nilai akan terhapus semua, apakah anda yakin menghapus akun tersebut ?');">&#x274c</button>-->
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <?php if ($key->bulanpenilaian == date('n')) {
-                                                            ?>
-                                                            <i class="fa fa-check"></i>
-                                                            <?php
-                                                        } else {
-                                                            ?>
-                                                            <i> - belum dinilai - </i>
-                                                            <?php
-                                                        }
-                                                        ?>
-
-                                                    </td>
+                                                    <!--<td><?php echo $key->idkuisioner; ?></td>-->
+                                                    <td><?php echo $key->pertanyaan; ?></td>
+                                                    <td class="text-center" style="color: blue;"><?php
+                                            echo round($key->nilai, 2);
+                                            $sumnilai+= $key->nilai;
+                                                ?></td>
                                                 </tr>
+
                                             <?php } ?>
                                         </tbody>
                                     </table>
+                                    <br><hr>
+                                    <div style="text-align: right;"><?php
+                                            $nilaiKKP = $sumnilai / $no;
+                                            echo "Nilai KKP = <b style=\"color: blue;\">$nilaiKKP</b>";
+                                            ?>
+                                    </div>
+                                    <br>
+
+
                                 </div>
                                 <!-- /.box-body -->
                             </div>
@@ -260,8 +222,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- page script -->
         <script>
             $(function () {
-                $("#example").DataTable({paging: false});
-                
+                $("#example").DataTable();
             });
         </script>
         <script>

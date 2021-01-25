@@ -25,7 +25,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Theme style -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>dist/css/AdminLTE.min.css">
         <!-- AdminLTE Skins. Choose a skin from the css/skins
-             folder instead of downloading all of them to reduce the load. -->
+folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>dist/css/skins/_all-skins.min.css">
     </head>
 
@@ -61,8 +61,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <!-- Menu toggle button -->
 
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-<!--                                    <i class="fa fa-envelope-o"></i>
-                                    <span class="label label-success">4</span>-->
+                                    <!--                                    <i class="fa fa-envelope-o"></i>
+<span class="label label-success">4</span>-->
                                     <?php
                                     echo date('l, d-m-Y');
                                     ;
@@ -102,7 +102,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Nilai KKP 
+                        Nilai KKP
                         <small></small>
                     </h1>
 
@@ -118,7 +118,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <div class="box">
                                 <div class="box-header">
                                     <!--                                    <h3 class="box-title">Nilai KKP Bulanan</h3> -->
-                                                    <!--<button class="btn btn-default pull-right"> <i class="fa fa-print" aria-hidden="true"></i>  PDF</button>-->
+                                    <!--<button class="btn btn-default pull-right"> <i class="fa fa-print" aria-hidden="true"></i>  PDF</button>-->
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body">
@@ -214,6 +214,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <?php // var_dump($improvement);       ?>
                                     <h2 class="text-center">Nilai KKP</h2>
                                     <h4 class="text-center">Periode <?php echo "$bulan $tahun"; ?></h4>
+                                    <!--<br><br>-->
 
                                     <h2 class="text-center"> </h2><br>
                                     <table id="example" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">
@@ -222,7 +223,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <th>No</th>
                                                 <th class="text-center">Bagian</th>
                                                 <th class="text-center">Overall Nilai </th>
-                                                <th class="text-center">Action</th>
+                                                <th class="text-center">Detil Penilaian</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -237,11 +238,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <tr>
                                                     <td class="text-center"><?php echo $no; ?></td>
                                                     <td><?php echo $key->bagiandinilai; ?></td>
-                                                    <td class="text-center" style="color: blue;"><?php
-                                            echo round($this->Nilai_m->avgNilaiBulanan($noBulan, $tahun, $key->bagiandinilai),2);
-                                                ?></td>
+                                                    <td class="text-center" style="color: blue;"><?php echo round($this->Nilai_m->avgNilaiBulanan($noBulan, $tahun, $key->bagiandinilai), 2); ?></td>
                                                     <td class="text-center">
-                                                        <a href="<?php echo base_url(); ?>index.php/ADM_NilaiKKP_c/listPenilai/<?php echo $bulan; ?>/<?php echo $noBulan; ?>/<?php echo $tahun; ?>/<?php echo $key->bagiandinilai; ?>"><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editAcc">Detil Penilaian</button>
+                                                        <a href="<?php echo base_url(); ?>index.php/ADM_NilaiKKP_c/listPenilai/<?php echo $bulan; ?>/<?php echo $noBulan; ?>/<?php echo $tahun; ?>/<?php echo $key->bagiandinilai; ?>">
+                                                            <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#editAcc">Per Penilai</button>
+                                                        </a>
+
+                                                        <a href="<?php echo base_url(); ?>index.php/ADM_NilaiKKP_c/detilNilaiPerKuisioner/<?php echo $bulan; ?>/<?php echo $noBulan; ?>/<?php echo $tahun; ?>/<?php echo $key->bagiandinilai; ?>">
+                                                            <button type="button" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#editAcc">Per Kuisioner</button>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -299,7 +304,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- page script -->
         <script>
             $(function () {
-                $("#example").DataTable();
+                $("#example").DataTable({
+                    "pageLength": 100
+                });
             });
         </script>
         <script>
@@ -316,9 +323,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </script>
 
         <!-- Optionally, you can add Slimscroll and FastClick plugins.
-             Both of these plugins are recommended to enhance the
-             user experience. Slimscroll is required when using the
-             fixed layout. -->
+Both of these plugins are recommended to enhance the
+user experience. Slimscroll is required when using the
+fixed layout. -->
     </body>
 </html>
 

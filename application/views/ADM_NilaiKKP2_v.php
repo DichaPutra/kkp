@@ -102,7 +102,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Detil Penilaian 
+                        Detil Penilaian
                         <small></small>
                     </h1>
 
@@ -128,8 +128,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                     <?php echo $pesan; ?>
                                     <?php // var_dump($improvement);   ?>
-                                    <h2 class="text-center">Detil Penilaian <?php echo "$bagiandinilai"; ?></h2>
-                                    <h4 class="text-center">Periode <?php echo "$bulan $tahun"; ?></h4>
+                                    <h2 class="text-center"><?php echo "$bagiandinilai"; ?></h2>
+                                    <h5 class="text-center">Detil Penilaian Per Penilai <?php echo "$bulan $tahun"; ?></h5>
 
                                     <h2 class="text-center"> </h2><br>
                                     <table id="example" class="table table-striped table-bordered nowrap" cellspacing="0" width="100%">

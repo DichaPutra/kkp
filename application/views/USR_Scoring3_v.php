@@ -1,6 +1,26 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+function warna($nilai) {
+    switch ($nilai) {
+        case $nilai >= 90 && $nilai <= 100 :
+            return 'background-color: #00B0F0;';
+            break;
+        case $nilai >= 80 && $nilai <= 89 :
+            return 'background-color: #00B050;';
+            break;
+        case $nilai >= 60 && $nilai <= 79 :
+            return 'background-color: #FFFF00;';
+            break;
+        case $nilai >= 50 && $nilai <= 59 :
+            return 'background-color: #FF0000;';
+            break;
+        case $nilai <= 50 :
+            return 'color: white; background-color: #0D0D0D;';
+            break;
+    }
+}
+
 function bulan($strm) {
     switch ($strm) {
         case 1 :
@@ -186,6 +206,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <tbody>
                                             <?php
                                             $no = 0;
+                                            $sum = 0;
                                             $counter = 0;
                                             foreach ($kuisioner as $key) {
                                                 $no++;
@@ -193,8 +214,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <tr>
                                                     <td class="text-center"><?php echo $no; ?></td>
                                                     <td><?php echo $key->pertanyaan; ?></td>
-                                                    <td class="text-center"> 
-                                                        <div><?php echo $nilai[$counter]['nilai']; ?></div>
+                                                    <td class="text-center" style="<?php echo warna($nilai[$counter]['nilai']); ?>"> 
+                                                        <b>
+                                                            <?php
+                                                            echo $nilai[$counter]['nilai'];
+                                                            $sum += $nilai[$counter]['nilai'];
+                                                            ?>
+                                                        </b>
                                                     </td>
                                                     <td>
                                                         <div><?php echo $nilai[$counter]['catatan']; ?></div>
@@ -203,9 +229,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                 <?php
                                                 $counter++;
                                             }
+
+//                                            menampilkan average  ====================
+                                            $no = $counter + 1;
+                                            $average = $sum / $counter;
+                                            ?>
+                                            <tr>
+                                                <td class="text-center"></td>
+                                                <td class="text-center"><b>Average</b></td>
+                                                <td class="text-center" style="<?php echo warna($average); ?>"> <b><?php echo round($average, 2); ?></b></td>
+                                                <td></td>
+                                            </tr>;
+                                            <?php
                                             ?>
                                         </tbody>
                                     </table>
+                                    <div style="border: 2px solid; border-radius: 5px;
+                                         ">
+                                        <br><b>Kritik & Saran :</b><br>
+                                        <p><?php echo $kritiksaran['kritiksaran']; ?></p><br><br>
+                                    </div>
+                                    <img src="<?php echo base_url(); ?>dist/img/KeteranganNilai.PNG" alt="User Image" style="margin-top: 10px;">
                                 </div>
                                 <!-- /.box-body -->
                             </div>
@@ -256,9 +300,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script>
             $(function () {
                 $("#example").DataTable({
-                    "paging": false,"searching": false
-                }
-            );
+                    "orderable": false, "sort" : false,
+                    "paging": false,"searching": false,"bInfo" : false
+                });
             });
         </script>
         <script>

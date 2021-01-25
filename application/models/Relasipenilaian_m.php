@@ -30,4 +30,12 @@ class Relasipenilaian_m extends CI_Model {
         }
     }
 
+    function updateBulanPenilaian($bagianpenilai, $bagiandinilai) {
+        $bulan = date('n');
+        $query = $this->db->query("UPDATE `relasipenilaian` SET `bulanpenilaian` = '$bulan' 
+            WHERE `relasipenilaian`.`bagianpenilai` = '$bagianpenilai'
+                AND `relasipenilaian`.`bagiandinilai` = '$bagiandinilai';");
+        
+    }
+
 }

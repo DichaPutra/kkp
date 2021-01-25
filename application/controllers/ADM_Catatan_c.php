@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ADM_NilaiKKP_c extends CI_Controller {
+class ADM_Catatan_c extends CI_Controller {
 
     /**
      *  FUNGSI CONTROLLER NilaiKKP
@@ -51,14 +51,13 @@ class ADM_NilaiKKP_c extends CI_Controller {
                 $this->datakirim['tahun'] = $year;
 //                echo "date ada input bulan = $month , year = $year";
             } else {
-                $this->load->model('Nilai_m');
                 if (date('n') == 1) {
-                    $month = 'December';
+                    $month = date('F');
                     $monthNumber = 12;
                     $year = date('Y') - 1;
                 } else {
-                    $monthNumber = date('n') - 1;
-                    $month = $this->Nilai_m->bulankonversi($monthNumber);
+                    $month = date('F');
+                    $monthNumber = date('n')-1;
                     $year = date('Y');
                 }
                 $this->datakirim['bulan'] = $month;
@@ -68,47 +67,12 @@ class ADM_NilaiKKP_c extends CI_Controller {
             }
 
             $this->load->model('Nilai_m');
-            $this->datakirim['dept'] = $this->Nilai_m->getAvgNilaiKKPBulanan($monthNumber, $year);
+            $this->datakirim['dept'] = $this->Nilai_m->getCatatanBulanan($monthNumber, $year);
             //initiate all year yang ada di database
             $this->datakirim['tahunlistdb'] = $this->Nilai_m->tahunlistdb();
 
-            $this->load->view('ADM_NilaiKKP_v', $this->datakirim);
+            $this->load->view('ADM_Catatan_v', $this->datakirim);
         }
-    }
-
-    public function listPenilai($bulan, $noBulan, $tahun, $bagiandinilai) {
-        $bagiandinilai = urldecode($bagiandinilai);
-        $this->datakirim['pesan'] = $this->pesan;
-
-        $this->datakirim['bulan'] = $bulan;
-        $this->datakirim['nobulan'] = $noBulan;
-        $this->datakirim['tahun'] = $tahun;
-        $this->datakirim['bagiandinilai'] = $bagiandinilai;
-
-        $this->load->model('Nilai_m');
-        $this->datakirim['detilpenilai'] = $this->Nilai_m->detilPenilai($noBulan, $tahun, $bagiandinilai);
-        $this->datakirim['detilnilai'] = $this->Nilai_m->detilNilaiPenilai($noBulan, $tahun, $bagiandinilai);
-
-
-        $this->load->view('ADM_NilaiKKP2_v', $this->datakirim);
-//        echo "$noBulan |$bulan| $tahun |$bagiandinilai";
-    }
-
-    public function detilNilaiPerKuisioner($bulan, $noBulan, $tahun, $bagiandinilai) {
-        $bagiandinilai = urldecode($bagiandinilai);
-        $this->datakirim['pesan'] = $this->pesan;
-
-        $this->datakirim['bulan'] = $bulan;
-        $this->datakirim['nobulan'] = $noBulan;
-        $this->datakirim['tahun'] = $tahun;
-        $this->datakirim['bagiandinilai'] = $bagiandinilai;
-
-        $this->load->model('Nilai_m');
-        $this->datakirim['detilNilaiPerKuisiner'] = $this->Nilai_m->getDetilNilaiPerKuisioner($noBulan, $tahun, $bagiandinilai);
-//        $this->datakirim['detilnilai'] = $this->Nilai_m->detilNilaiPenilai($noBulan, $tahun, $bagiandinilai);
-
-
-        $this->load->view('ADM_NilaiKKPq_v', $this->datakirim);
     }
 
 }
