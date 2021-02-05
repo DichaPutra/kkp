@@ -2,11 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/xampp/htdocs/kkp/application/controllers/Welcome.php</file>
-            <file>file:/C:/xampp/htdocs/kkp/application/controllers/ADM_Dashboard_c.php</file>
-            <file>file:/C:/xampp/htdocs/kkp/dist/css/ionicons/less/_ionicons-icons.less</file>
-            <file>file:/C:/xampp/htdocs/kkp/application/controllers/ADM_Account_c.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
